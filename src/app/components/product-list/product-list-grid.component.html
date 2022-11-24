@@ -1,0 +1,46 @@
+<div class="main-content">
+  <div class="section-content section-content-p30">
+
+    <!--    this is for title-->
+
+    <div *ngIf="searchMode==false; then categoryName else all"></div>
+    <ng-template #categoryName>
+      Category: {{ currentCategoryName }}
+    </ng-template>
+    <ng-template #all>
+      Category: All
+    </ng-template>
+
+
+    <hr>
+
+    <div class="container-fluid">
+      <div class="row">
+
+
+        <!--        loop over the collection of products-->
+        <div *ngFor="let tempProduct of products" class="wrapper col-md-3">
+          <div class="product-box">
+            <a routerLink="/products/{{tempProduct.id}}">
+              <img src="{{tempProduct.imageUrl}}" alt="img-not-found" class="img-responsive">
+            </a>
+
+            <a routerLink="/products/{{tempProduct.id}}" style="display: block">
+              <h1>
+                {{tempProduct.name}}
+              </h1>
+            </a>
+            <div class="price">{{tempProduct.unitPrice | currency:'USD'}}</div>
+            <a href="#" class="primary-btn">Add to cart</a>
+          </div>
+        </div>
+
+        <!--        if no products return-->
+        <div *ngIf="products?.length==0" class="alert alert-warning col-md-12" role="alert">
+          No products found.
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

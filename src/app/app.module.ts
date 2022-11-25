@@ -11,6 +11,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {ProductService} from "./services/product.service";
 
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import { CartStatusComponent } from './components/cart-status/cart-status.component';
 
 const routes: Routes = [
   // {path: 'category/:id', component: ProductListComponent},
@@ -29,7 +30,8 @@ const routes: Routes = [
     ProductListComponent,
     ProductCategoryMenuComponent,
     SearchComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    CartStatusComponent
 
   ],
   imports: [

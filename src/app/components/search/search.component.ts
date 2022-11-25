@@ -12,7 +12,7 @@ export class SearchComponent {
   }
 
   doSearch(value: string) {
-    console.log(value);
+    console.log("method in search.component.ts: -- " +value);
     this.router.navigateByUrl(`/search/${value}`);
   }
 

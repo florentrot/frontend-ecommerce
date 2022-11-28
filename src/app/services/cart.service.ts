@@ -36,7 +36,7 @@ export class CartService {
     this.computeCartTotals();
   }
 
-  private computeCartTotals() {
+  public computeCartTotals() {
     let totalPriceValue: number=0;
     let totalQuantityValue:number =0;
 
@@ -61,5 +61,26 @@ export class CartService {
 
     console.log(`total price= ${totalPriceValue.toFixed(2)}; total quantity= ${totalQuantityValue}`);
     console.log("----------------------");
+  }
+
+  decrementQuantity(theCartItem: CartItem) {
+    theCartItem.quantity--;
+
+    if(theCartItem.quantity===0){
+      this.remove(theCartItem);
+    } else {
+      this.computeCartTotals();
+    }
+  }
+
+  public remove(theCartItem: CartItem) {
+    // get index of it in the array
+    const itemIndex = this.cartItems.findIndex(tempCartItem => tempCartItem.id === theCartItem.id);
+
+    if(itemIndex>-1){
+      this.cartItems.splice(itemIndex, 1);
+
+      this.computeCartTotals();
+    }
   }
 }

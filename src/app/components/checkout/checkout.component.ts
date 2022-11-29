@@ -5,6 +5,7 @@ import {Country} from "../../common/country";
 import {County} from "../../common/county";
 import * as stream from "stream";
 import {AppValidators} from "../../validators/app-validators";
+import {CartService} from "../../services/cart.service";
 
 @Component({
   selector: 'app-checkout',
@@ -26,7 +27,8 @@ export class CheckoutComponent implements OnInit {
   billingAddressStates: County[]=[];
 
   constructor(private fb: FormBuilder,
-              private myShopFormService: MyShopFormService) {
+              private myShopFormService: MyShopFormService,
+              private cartService: CartService) {
   }
 
   ngOnInit(): void {
@@ -98,6 +100,9 @@ export class CheckoutComponent implements OnInit {
         this.countries =data;
       }
     );
+  //passing values from CartService
+  this.reviewCartDetails();
+
   }
 
   get firstName() {return this.checkoutFormGroup.get('customer.firstName');}
@@ -186,10 +191,18 @@ export class CheckoutComponent implements OnInit {
 
   }
 
+  private reviewCartDetails() {
+    this.cartService.totalQuantity.subscribe(
+      totalQuantity => this.totalQuantity = totalQuantity
+    );
+
+    this.cartService.totalPrice.subscribe(
+      totalPrice => this.totalPrice = totalPrice
+    );
+  }
+
   onSubmit() {
     console.log("clicked submit");
-
-
     if(this.checkoutFormGroup.invalid) {
       this.checkoutFormGroup.markAllAsTouched();
     }
@@ -199,7 +212,5 @@ export class CheckoutComponent implements OnInit {
     console.log(`Shipping address is ${this.checkoutFormGroup.get('shippingAddress')}`);
     console.log(`Shipping addres is ${this.checkoutFormGroup.get('shippingAddress')}`);
   }
-
-
 
 }

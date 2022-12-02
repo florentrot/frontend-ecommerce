@@ -11,7 +11,7 @@ export class AppValidators {
     //   return null;
     // }
 
-    if ((control.value as string).indexOf(' ') != -1) {
+    if ((control.value as string)?.indexOf(' ') != -1) {
       return { 'notOnlyWhitespace': true };
     }
     return null;
@@ -20,7 +20,7 @@ export class AppValidators {
 
   static notOnlyWhitespaceTrim(control: AbstractControl) : ValidationErrors | null {
 
-    if((control.valid!=null) && (control.value.trim().length ===0)) {
+    if((control.valid!=null) && (control?.value?.trim()?.length ===0)) {
 
       return {'notOnlyWhitespaceTrim': true};
     } else {

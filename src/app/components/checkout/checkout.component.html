@@ -154,7 +154,7 @@
             <div class="col-md-2"><label>State/County: </label></div>
             <div class="col-md-9">
               <div class="input-space">
-                <select formControlName="state">
+                <select formControlName="county">
                   <option *ngFor="let county of shippingAddressStates" [ngValue]="county">
                     {{county.name}}
                   </option>
@@ -284,7 +284,7 @@
             <div class="col-md-2"><label>State/County: </label></div>
             <div class="col-md-9">
               <div class="input-space">
-                <select formControlName="state">
+                <select formControlName="county">
                   <option *ngFor="let county of billingAddressStates" [ngValue]="county">
                     {{county.name}}
                   </option>
@@ -368,9 +368,9 @@
                 <div *ngIf="creditCardNameOnCard?.errors?.['minlength']">
                   name on card must be at least 2 characters long
                 </div>
-                <div *ngIf="creditCardNameOnCard?.errors?.['notOnlyWhitespaceTrim']">
-                  Name on card should not begin/end with white spaces.
-                </div>
+<!--                <div *ngIf="creditCardNameOnCard?.errors?.['notOnlyWhitespaceTrim']">-->
+<!--                  Name on card should not begin/end with white spaces.-->
+<!--                </div>-->
               </div>
 
             </div>
@@ -391,6 +391,7 @@
                     Credit card number must be 16 digits long.
                     {{creditCardNumber?.value}}
                   </div>
+                  {{creditCardNumber?.value}}
                 </div>
               </div>
             </div>

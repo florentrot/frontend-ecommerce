@@ -35,6 +35,7 @@
   border:10px solid #205b8d;
   -webkit-border-radius:3px;
   -moz-border-radius:3px;
-  border-radius:0;
-  background:#205b8d
+  border-radius:20rem;
+  background:#205b8d;
+  margin: 0px 5px;
 }

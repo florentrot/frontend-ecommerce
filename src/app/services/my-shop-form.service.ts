@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {Country} from "../common/country";
 import {map} from "rxjs/operators";
 import {County} from "../common/county";
+import {Order} from "../common/order";
 
 @Injectable({
   providedIn: 'root'

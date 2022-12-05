@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MyShopFormService} from "../../services/my-shop-form.service";
 import {Country} from "../../common/country";
 import {County} from "../../common/county";
@@ -11,6 +11,7 @@ import {Router} from "@angular/router";
 import {Order} from "../../common/order";
 import {OrderItem} from "../../common/order-item";
 import {Purchase} from "../../common/purchase";
+import {Customer} from "../../common/customer";
 
 @Component({
   selector: 'app-checkout',
@@ -31,6 +32,8 @@ export class CheckoutComponent implements OnInit {
   shippingAddressStates: County[]=[];
   billingAddressStates: County[]=[];
 
+  storage: Storage = sessionStorage;
+
   constructor(private fb: FormBuilder,
               private myShopFormService: MyShopFormService,
               private cartService: CartService,
@@ -40,6 +43,12 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit(): void {
 
+    //passing values from CartService
+    this.reviewCartDetails();
+
+    //read the user email
+    const theEmail = JSON.parse(this.storage.getItem('userEmail')!)
+
     this.checkoutFormGroup = this.fb.group({
       customer: this.fb.group({
         firstName: new FormControl('', [Validators.required,
@@ -48,7 +57,7 @@ export class CheckoutComponent implements OnInit {
         lastName: new FormControl('', [Validators.required,
                                                           AppValidators.notOnlyWhitespaceTrim,
                                                           Validators.minLength(2)]),
-        email: new FormControl('', [Validators.required,
+        email: new FormControl(theEmail, [Validators.required,
                                                       AppValidators.notOnlyWhitespace,
                                                       Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])
       }),
@@ -107,12 +116,16 @@ export class CheckoutComponent implements OnInit {
         this.countries =data;
       }
     );
-  //passing values from CartService
-  this.reviewCartDetails();
 
   }
 
-  get firstName() {return this.checkoutFormGroup.get('customer.firstName');}
+  get firstName(){
+    // let con =this.checkoutFormGroup.getRawValue().customer.firstName;
+    // console.log(con);
+
+    return this.checkoutFormGroup.get('customer.firstName');
+  }
+
   get lastName() {return this.checkoutFormGroup.get('customer.lastName');}
   get email() {return this.checkoutFormGroup.get('customer.email');}
 
@@ -164,10 +177,14 @@ export class CheckoutComponent implements OnInit {
 
       // fix the bug
       this.billingAddressStates=this.shippingAddressStates;
+      console.log(this.checkoutFormGroup.controls['billingAddress']);
+
     } else {
       this.checkoutFormGroup.controls['billingAddress'].reset();
+
       // fix the bug
       this.billingAddressStates =[];
+
     }
   }
 

@@ -5,14 +5,15 @@ import {Country} from "../common/country";
 import {map} from "rxjs/operators";
 import {County} from "../common/county";
 import {Order} from "../common/order";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MyShopFormService {
 
-  private countriesUrl = 'http://localhost:8080/api/countries';
-  private countiesUrl = 'http://localhost:8080/api/counties';
+  private countriesUrl = environment.ecommerceUrl+'/countries';
+  private countiesUrl = environment.ecommerceUrl+'/counties';
 
   constructor(private httpClient: HttpClient) { }
 

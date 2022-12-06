@@ -23,6 +23,8 @@ export class ProductService {
 
     const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`
                       +`&page=${thePage}&size=${thePageSize}`;
+
+    console.log(`getting products from - ${searchUrl}`); // check port
     return this.httpClient.get<GetResponseProduct>(searchUrl);
   }
 

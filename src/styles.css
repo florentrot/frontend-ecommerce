@@ -218,7 +218,7 @@ section{
 }
 
 .au-input-xl{
-  min-width:935px
+  min-width:500px
 }
 
 input.au-input.au-input-xl{
@@ -297,6 +297,7 @@ input.au-input.au-input-xl{
 .au-btn-submit:hover{
   background:#05143f
 }
+
 
 .au-btn-submit>i{
   font-size:20px;
@@ -526,10 +527,10 @@ input.au-input.au-input-xl{
  * ----------------------------
  */
 /* -----START-----My feature to correct */
-.wrapper {
-  display: inline-grid;
-  width: 300px;
-}
+/*.wrapper {*/
+/*  display: inline-grid;*/
+/*  width: 300px;*/
+/*}*/
 .wrapper h1 {
   height: 60px;
 }
@@ -788,7 +789,7 @@ footer{
   background:#232324;
   z-index:1;
   position:relative;
-  text-align:center
+  text-align:center;
 }
 footer li a{
   color:#313131;
@@ -799,6 +800,8 @@ footer ul li{
   font-size:14px;
   padding:10px 20px
 }
+
+
 
 /*
  * ----------------------------

@@ -3,14 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+
+  ecommerceUrl: "https://localhost:8443/api",
+  stripePublishableKey: "pk_test_51MC0ODIY9zkig09De0yZBTmn4wgK3k60TzNRXo2w8SV4i0Ypu4Mq28OMBcMhnXUlwmBep8NtQe381yNyR9WOEsRJ00eeUFaaJO"
 };
 
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
+

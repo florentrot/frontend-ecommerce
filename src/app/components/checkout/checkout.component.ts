@@ -22,6 +22,8 @@ import {PaymentInfo} from "../../common/payment-info";
 })
 export class CheckoutComponent implements OnInit {
 
+  isDisabled: boolean = false;
+
   checkoutFormGroup!: FormGroup;
 
   totalPrice: number = 0;
@@ -285,7 +287,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log("clicked submit");
+
     if (this.checkoutFormGroup.invalid) {
       this.checkoutFormGroup.markAllAsTouched();
       return;
@@ -320,6 +322,7 @@ export class CheckoutComponent implements OnInit {
     //populate purchase - shipping address
     purchase.shippingAddress = this.checkoutFormGroup.controls['shippingAddress'].value;
     console.log(purchase.shippingAddress);
+
     const shippingCounty: County = JSON.parse(JSON.stringify(purchase.shippingAddress.county));
     const shippingCountry: Country = JSON.parse(JSON.stringify(purchase.shippingAddress.country));
     purchase.shippingAddress.county = shippingCounty.name;
@@ -329,8 +332,8 @@ export class CheckoutComponent implements OnInit {
     purchase.billingAddress = this.checkoutFormGroup.controls['billingAddress'].value;
     const billingCounty: County = JSON.parse(JSON.stringify(purchase.billingAddress.county));
     const billingCountry: Country = JSON.parse(JSON.stringify(purchase.billingAddress.country));
-    purchase.billingAddress.county = shippingCounty.name;
-    purchase.billingAddress.country = shippingCountry.name;
+    purchase.billingAddress.county = billingCounty.name;
+    purchase.billingAddress.country = billingCountry.name;
 
 
     // populate purchase - order and orderItems
@@ -338,26 +341,45 @@ export class CheckoutComponent implements OnInit {
     purchase.orderItems = orderItems;
 
     // compute payment info
-    this.paymentInfo.amount = this.totalPrice * 100;
+    this.paymentInfo.amount = Math.round(this.totalPrice * 100);
     this.paymentInfo.currency = "USD";
 
+    this.paymentInfo.receiptEmail= purchase.customer.email;
+
+   // console.log(`${this.paymentInfo.amount}`)
     // if valid form then
     // - create payment intent
     // - confirm card payment
     // - place order
     if (!this.checkoutFormGroup.invalid && this.displayError.textContent === "") {
+
+      this.isDisabled = true;
+
       this.checkoutService.createPaymentIntent(this.paymentInfo).subscribe(
         (paymentIntentResponse) => {
           this.stripe.confirmCardPayment(paymentIntentResponse.client_secret,
             {
               payment_method: {
-                card: this.cardElement
+                card: this.cardElement,
+
+                billing_details: {
+                  email: purchase.customer.email,
+                  name: `${purchase.customer.firstName} ${purchase.customer.lastName}`,
+                  address: {
+                    line1: purchase.billingAddress.street,
+                    city: purchase.billingAddress.city,
+                    state: purchase.billingAddress.county,
+                    postal_code: purchase.billingAddress.zipCode,
+                    country: this.billingAddressCountry?.value.code
+                  }
+                }
               }
             }, {handleActions: false})
             .then((result: any) => {
               if (result.error) {
                 // inform the customer there was an error
                 alert(`There was an error: ${result.error.message}`);
+                this.isDisabled = false;
               } else {
                 // cal REST API via the CheckoutService
                 this.checkoutService.placeOrder(purchase).subscribe({
@@ -366,9 +388,11 @@ export class CheckoutComponent implements OnInit {
 
                       // reset cart
                       this.resetCart();
+                      this.isDisabled = false;
                     },
                     error: (err: any) => {
                       alert(`There was an error: ${err.message}`);
+                      this.isDisabled = false;
                     }
                   })
               }
@@ -409,6 +433,7 @@ export class CheckoutComponent implements OnInit {
     this.cartService.cartItems = [];
     this.cartService.totalPrice.next(0);
     this.cartService.totalQuantity.next(0);
+    this.cartService.persistCartItems();
 
     // reset the form
     this.checkoutFormGroup.reset();

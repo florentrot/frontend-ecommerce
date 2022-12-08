@@ -527,10 +527,10 @@ input.au-input.au-input-xl{
  * ----------------------------
  */
 /* -----START-----My feature to correct */
-.wrapper {
-  display: inline-grid;
-  width: 300px;
-}
+/*.wrapper {*/
+/*  display: inline-grid;*/
+/*  width: 300px;*/
+/*}*/
 .wrapper h1 {
   height: 60px;
 }
